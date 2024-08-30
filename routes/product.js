@@ -1,6 +1,7 @@
 const router = require("express")();
 const initializeConnections = require("../config/intializeConnection.js");
 const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
 let productConnection;
 
 initializeConnections()
@@ -22,15 +23,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get("/", (req, res, next) => {
-  res.send("This works 1");
+router.get("/", async (req, res, next) => {
+  try {
+    let productList = await productConnection.find({}).toArray();
+    res.status(200).send(productList);
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
 });
 
 router.post("/add", upload.single("image"), async (req, res, next) => {
   try {
     const {
       productName,
-      productId,
       buyingPrice,
       productCategory,
       quantity,
@@ -43,6 +48,7 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
       ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`
       : null;
     console.log(imageUrl, "Image Url");
+    let productId = uuidv4();
     const Product = {
       productName,
       productId,
@@ -73,8 +79,16 @@ router.put("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-  console.log("PARAMS: ", req.params);
-  res.send("This works 4");
+  try {
+    let result = productConnection.deleteOne({ productId: req.params.id });
+    if (result) {
+      res.status(200).send({ message: "product deleted successfully" });
+    } else {
+      res.status(404).send({ message: "No Product Registered" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: `error while deleting product` });
+  }
 });
 
 module.exports = router;
