@@ -4,14 +4,14 @@ const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 let productConnection;
 
-initializeConnections()
-  .then((connections) => {
-    // console.log(connections, "connection");
-    productConnection = connections.productCollection;
-  })
-  .catch((error) => {
-    console.error("Failed to initialize database connections:", error);
-  });
+// initializeConnections()
+//   .then((connections) => {
+//     // console.log(connections, "connection");
+//     productConnection = connections.productCollection;
+//   })
+//   .catch((error) => {
+//     console.error("Failed to initialize database connections:", error);
+//   });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // Specify the directory to save images
@@ -56,10 +56,10 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
       productCategory,
       quantity,
       unit,
-      expiryDate,
+      // expiryDate,
       threshOldValue,
-      imageUrl: imageUrl,
-      createdAt: new Date(),
+      // imageUrl: imageUrl,
+      // createdAt: new Date(),
     };
     try {
       console.log(Product);
@@ -99,10 +99,10 @@ router.put("/:id", upload.single("image"), async (req, res, next) => {
       productCategory,
       quantity,
       unit,
-      expiryDate,
+      // expiryDate,
       threshOldValue,
-      imageUrl: imageUrl,
-      updatedAt: new Date(),
+      // imageUrl: imageUrl,
+      // updatedAt: new Date(),
     };
     const result = await productConnection.updateOne(
       { productId: productId },
