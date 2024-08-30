@@ -73,9 +73,50 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
   } catch (err) {}
 });
 
-router.put("/:id", (req, res, next) => {
-  console.log("PARAMS: ", req.params);
-  res.send("This works 3");
+router.put("/:id", upload.single("image"), async (req, res, next) => {
+  try {
+    const {
+      productName,
+      buyingPrice,
+      productCategory,
+      quantity,
+      unit,
+      expiryDate,
+      threshOldValue,
+    } = req.body;
+    console.log(req.body);
+    // const imageUrl = req.file ? req.file.path : null;
+    const imageUrl = req.file
+      ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`
+      : null;
+    const productId = req.params.id;
+    if (!productId) {
+      res.status(400).send({ message: "Product id is required" });
+    }
+    const updatedProduct = {
+      productName,
+      buyingPrice,
+      productCategory,
+      quantity,
+      unit,
+      expiryDate,
+      threshOldValue,
+      imageUrl: imageUrl,
+      updatedAt: new Date(),
+    };
+    const result = await productConnection.updateOne(
+      { productId: productId },
+      { $set: updatedProduct }
+    );
+    if (result.modifiedCount == 0) {
+      return res
+        .status(404)
+        .send({ message: "Product not found or no changes made" });
+    }
+    res.status(200).send("product updated successfully");
+  } catch (err) {
+    res.status(500).send({ message: "error while updating Product detials" });
+  }
 });
 
 router.delete("/:id", (req, res, next) => {
