@@ -5,8 +5,10 @@ const connectDB = async () => {
     const client = new MongoClient(
       "mongodb+srv://demoUser:3nFCaGYLkry17NDG@cluster0.z2rwq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0PORT=2000",
       {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        connectTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
       }
     );
     await client.connect();
