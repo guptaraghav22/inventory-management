@@ -63,7 +63,6 @@ router.post("/add", async (req, res, next) => {
     };
     try {
       const result = await productConnection.insertOne(Product);
-      console.log(result);
     } catch (err) {
       console.log(err, "err");
       res.send(err);
@@ -83,7 +82,7 @@ router.put("/:id", upload.single("image"), async (req, res, next) => {
       expiryDate,
       threshOldValue,
     } = req.body;
-    console.log(req.body);
+
     // const imageUrl = req.file ? req.file.path : null;
     const imageUrl = req.file
       ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`

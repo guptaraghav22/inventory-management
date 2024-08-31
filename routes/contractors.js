@@ -57,7 +57,7 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
     };
 
     let result = await contractorConnections.insertOne(updatedContractor);
-    console.log(updatedContractor);
+
     if (result) {
       res.status(200).send({ result });
     } else {
