@@ -32,7 +32,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/add", upload.single("image"), async (req, res, next) => {
+// router.post("/add", upload.single("image"), async (req, res, next) => {
+router.post("/add", async (req, res, next) => {
   try {
     const {
       productName,
