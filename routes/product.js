@@ -59,7 +59,7 @@ router.post("/add", async (req, res, next) => {
       unit,
       // expiryDate,
       threshOldValue,
-      lastOrderedDate,
+      // lastOrderedDate: "",
       // imageUrl: imageUrl,
       // createdAt: new Date(),
     };

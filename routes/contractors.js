@@ -23,7 +23,7 @@ const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
   try {
-    let result = await contractorConnections.findOne({});
+    let result = await contractorConnections.find({}).toArray();
 
     if (result) {
       res.status(200).send(result);
