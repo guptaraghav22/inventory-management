@@ -23,7 +23,10 @@ const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
   try {
-    let result = await contractorConnections.find({}).toArray();
+    let result = await contractorConnections
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
 
     if (result) {
       res.status(200).send(result);
@@ -38,20 +41,25 @@ router.get("/", async (req, res, next) => {
 
 router.post("/add", upload.single("image"), async (req, res, next) => {
   try {
-    let { supplierName, product, contractorNumber, email, type, onTheWay } =
-      req.body;
+    let {
+      contractorName,
+      contractorProductId,
+      contractorContactNumber,
+      contractorEmail,
+      contractorType,
+    } = req.body;
 
     let contractorId = uuidv4();
-    const imageUrl = req.file
-      ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`
-      : null;
+    // const imageUrl = req.file
+    //   ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`
+    //   : null;
     let updatedContractor = {
-      supplierName,
-      product,
-      contractorNumber,
-      email,
-      type,
-      onTheWay,
+      contractorName,
+      contractorProductId,
+      contractorContactNumber,
+      contractorEmail,
+      contractorType,
+      onTheWay: 34,
       contractorId,
       // imageUrl,
     };
