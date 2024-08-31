@@ -42,6 +42,7 @@ router.post("/add", async (req, res, next) => {
       unit,
       expiryDate,
       threshOldValue,
+      lastOrderedDate,
     } = req.body;
     // const imageUrl = req.file ? req.file.path : null;
     // const imageUrl = req.file
@@ -58,6 +59,7 @@ router.post("/add", async (req, res, next) => {
       unit,
       // expiryDate,
       threshOldValue,
+      lastOrderedDate,
       // imageUrl: imageUrl,
       // createdAt: new Date(),
     };
