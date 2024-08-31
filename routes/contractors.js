@@ -4,13 +4,13 @@ const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 let contractorConnections;
 
-initializeConnections()
-  .then((connections) => {
-    contractorConnections = connections.contractorCollection;
-  })
-  .catch((error) => {
-    console.error("Failed to initialize database connections:", error);
-  });
+// initializeConnections()
+//   .then((connections) => {
+//     contractorConnections = connections.contractorCollection;
+//   })
+//   .catch((error) => {
+//     console.error("Failed to initialize database connections:", error);
+//   });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/contractor");
