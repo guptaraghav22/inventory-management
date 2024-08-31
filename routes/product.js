@@ -24,7 +24,10 @@ const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
   try {
-    let productList = await productConnection.find({}).toArray();
+    let productList = await productConnection
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
     res.status(200).send(productList);
   } catch (err) {
     res.status(400).send({ message: err.message });
@@ -50,6 +53,7 @@ router.post("/add", async (req, res, next) => {
     //   : null;
     // console.log(imageUrl, "Image Url");
     let productId = uuidv4();
+    let createdAt = new Date();
     const Product = {
       productName,
       productId,
@@ -62,6 +66,7 @@ router.post("/add", async (req, res, next) => {
       // lastOrderedDate: "",
       // imageUrl: imageUrl,
       // createdAt: new Date(),
+      createdAt,
     };
     try {
       const result = await productConnection.insertOne(Product);

@@ -23,7 +23,10 @@ const upload = multer({ storage });
 
 router.get("/", async (req, res, next) => {
   try {
-    let result = await contractorConnections.find({}).toArray();
+    let result = await contractorConnections
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
 
     if (result) {
       res.status(200).send(result);
@@ -42,6 +45,7 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
       req.body;
 
     let contractorId = uuidv4();
+    let createdAt = new Date();
     // const imageUrl = req.file
     //   ? `http://localhost:2000/${req.file.path.replace(/\\/g, "/")}`
     //   : null;
@@ -53,6 +57,7 @@ router.post("/add", upload.single("image"), async (req, res, next) => {
       type,
       onTheWay,
       contractorId,
+      createdAt,
     };
 
     let result = await contractorConnections.insertOne(updatedContractor);

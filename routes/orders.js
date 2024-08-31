@@ -15,7 +15,10 @@ initializeConnections()
 
 router.get("/", async (req, res, next) => {
   try {
-    let result = await orderConnection.find({}).toArray();
+    let result = await orderConnection
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
     if (result) {
       res.status(200).send(result);
     } else {
@@ -39,6 +42,7 @@ router.post("/add", async (req, res, next) => {
     contractorStatus,
   } = req.body;
   console.log(req.body);
+  let createdAt = new Date();
   let orderId = uuidv4();
   let updatedOrder = {
     contractorName,
@@ -47,6 +51,7 @@ router.post("/add", async (req, res, next) => {
     contractorEmail,
     contractorStatus,
     onTheWay: "34",
+    createdAt,
   };
   let result = await orderConnection.insertOne(updatedOrder);
   if (result) {
