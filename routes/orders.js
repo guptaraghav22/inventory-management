@@ -31,18 +31,22 @@ router.post("/add", async (req, res, next) => {
   } catch (err) {
     res.status(500).send({ message: "internal server error" });
   }
-  let { product, OrderValue, orderQuantity, expectedDelivery, orderStatus } =
-    req.body;
+  let {
+    contractorName,
+    contractorProductId,
+    contractorContactNumber,
+    contractorEmail,
+    contractorStatus,
+  } = req.body;
   console.log(req.body);
   let orderId = uuidv4();
   let updatedOrder = {
-    product,
-    orderQuantity,
-    OrderValue,
-    orderQuantity,
-    expectedDelivery,
-    orderStatus,
-    orderId,
+    contractorName,
+    contractorProductId,
+    contractorContactNumber,
+    contractorEmail,
+    contractorStatus,
+    onTheWay: "34",
   };
   let result = await orderConnection.insertOne(updatedOrder);
   if (result) {
